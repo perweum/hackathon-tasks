@@ -1,0 +1,152 @@
+.board-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.board-header {
+  background: var(--coop-blue);
+  padding: 1rem 2rem;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.board-logo {
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.375rem 1rem 0.375rem 0.375rem;
+  border-radius: 100px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: white;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.logout-btn {
+  background: transparent;
+  color: white;
+  opacity: 0.8;
+}
+
+.logout-btn:hover {
+  opacity: 1;
+}
+
+.board-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  padding: 2rem;
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.board-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 500px;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.column-header h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.column-header svg {
+  color: var(--coop-blue);
+}
+
+.board-column.backlog .column-header svg { color: var(--text-secondary); }
+.board-column.doing .column-header svg { color: var(--coop-blue-dark); }
+.board-column.done .column-header svg { color: var(--coop-blue); }
+
+.count {
+  background: var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.125rem 0.5rem;
+  border-radius: 100px;
+  margin-left: auto;
+}
+
+.column-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+@media (max-width: 1024px) {
+  .board-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+  
+  .board-column {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .board-header {
+    padding: 1rem;
+  }
+  
+  .user-name {
+    display: none;
+  }
+  
+  .user-profile {
+    padding-right: 0.375rem;
+  }
+}

@@ -1,0 +1,110 @@
+.task-card {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.task-card.backlog { border-left-color: var(--coop-blue-light); }
+.task-card.doing { border-left-color: var(--coop-blue-dark); }
+.task-card.done { border-left-color: var(--coop-blue); opacity: 0.8; }
+
+.task-card.assigned-to-me {
+  background-color: var(--coop-blue-light);
+  border-left-color: var(--coop-blue);
+}
+
+.task-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.625rem;
+  border-radius: 100px;
+  text-transform: uppercase;
+}
+
+.tag.main-category.web { background: #e0f2fe; color: #0369a1; }
+.tag.main-category.ecom { background: #fef3c7; color: #92400e; }
+.tag.main-category.generelt { background: #f3f4f6; color: #4b5563; }
+
+.tag.sub-category.ny { background: #dcfce7; color: #166534; }
+.tag.sub-category.iterasjon { background: #fef2f2; color: #991b1b; }
+
+.task-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.task-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.task-assignee {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.assignee-img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-color);
+}
+
+.task-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.pick-btn {
+  background: var(--coop-blue);
+  color: white;
+}
+
+.pick-btn:hover {
+  background: var(--coop-blue-dark);
+}
+
+.done-btn {
+  background: var(--coop-blue-dark);
+  color: white;
+}
+
+.done-btn:hover {
+  background: var(--coop-blue);
+}
