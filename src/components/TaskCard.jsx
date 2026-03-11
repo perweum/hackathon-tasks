@@ -11,12 +11,16 @@ function TaskCard({ task, onAction, currentUser }) {
     <div className={`task-card ${task.status} ${isAssignedToMe ? 'assigned-to-me' : ''} fade-in`}>
       <div className="task-header">
         <div className="task-tags">
-          <span className={`tag main-category ${task.mainCategory.toLowerCase()}`}>
-            {task.mainCategory}
-          </span>
-          <span className={`tag sub-category ${task.subCategory.toLowerCase()}`}>
-            {task.subCategory}
-          </span>
+          {task.mainCategory && (
+            <span className={`tag main-category ${task.mainCategory.toLowerCase()}`}>
+              {task.mainCategory}
+            </span>
+          )}
+          {task.subCategory && (
+            <span className={`tag sub-category ${task.subCategory.toLowerCase()}`}>
+              {task.subCategory}
+            </span>
+          )}
         </div>
         {task.assignee && (
           <img src={task.assignee.avatar.url} alt={task.assignee.name} className="assignee-mini-img" title={task.assignee.name} />
@@ -24,11 +28,11 @@ function TaskCard({ task, onAction, currentUser }) {
       </div>
       
       <div className="task-body">
-        <h3 className="task-title">{task.title}</h3>
+        {task.title && <h3 className="task-title">{task.title}</h3>}
         {task.description && <p className="task-description">{task.description}</p>}
         {task.link && (
-          <a href={task.link} target="_blank" rel="noopener noreferrer" className="task-link">
-            Les mer <ExternalLink size={12} />
+          <a href={task.link} target="_blank" rel="noopener noreferrer" className="task-link" title={task.link}>
+            {task.link.replace(/^https?:\/\//, '').replace(/\/$/, '')} <ExternalLink size={12} />
           </a>
         )}
       </div>
