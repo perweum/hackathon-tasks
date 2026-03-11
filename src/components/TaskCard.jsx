@@ -1,11 +1,10 @@
 import React from 'react';
-import { PlayCircle, CheckCircle, User2, Tag } from 'lucide-react';
+import { PlayCircle, CheckCircle, ExternalLink } from 'lucide-react';
 import './TaskCard.css';
 
 function TaskCard({ task, onAction, currentUser }) {
   const isBacklog = task.status === 'backlog';
   const isDoing = task.status === 'doing';
-  const isDone = task.status === 'done';
   const isAssignedToMe = task.assignee?.name === currentUser?.name;
 
   return (
@@ -19,34 +18,31 @@ function TaskCard({ task, onAction, currentUser }) {
             {task.subCategory}
           </span>
         </div>
+        {task.assignee && (
+          <img src={task.assignee.avatar.url} alt={task.assignee.name} className="assignee-mini-img" title={task.assignee.name} />
+        )}
       </div>
       
-      <h3 className="task-title">{task.title}</h3>
+      <div className="task-body">
+        <h3 className="task-title">{task.title}</h3>
+        {task.description && <p className="task-description">{task.description}</p>}
+        {task.link && (
+          <a href={task.link} target="_blank" rel="noopener noreferrer" className="task-link">
+            Les mer <ExternalLink size={12} />
+          </a>
+        )}
+      </div>
 
       <div className="task-footer">
-        <div className="task-assignee">
-          {task.assignee ? (
-            <>
-              <img src={task.assignee.avatar.url} alt={task.assignee.name} className="assignee-img" />
-              <span>{task.assignee.name}</span>
-            </>
-          ) : (
-            <>
-              <User2 size={16} />
-              <span>Sperret</span>
-            </>
-          )}
-        </div>
-
         <div className="task-actions">
           {isBacklog && (
             <button className="action-btn pick-btn" onClick={onAction}>
-              Velg <PlayCircle size={16} />
+              Velg <PlayCircle size={14} />
             </button>
           )}
           {isDoing && isAssignedToMe && (
             <button className="action-btn done-btn" onClick={onAction}>
-              Ferdig <CheckCircle size={16} />
+              Ferdig <CheckCircle size={14} />
             </button>
           )}
         </div>
