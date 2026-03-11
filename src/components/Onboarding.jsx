@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
-import { AVATARS } from '../data/tasks';
-import { User, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { User, RefreshCw, ArrowRight } from 'lucide-react';
 import './Onboarding.css';
+
+const getRandomSeed = () => Math.random().toString(36).substring(7);
 
 function Onboarding({ onComplete }) {
   const [name, setName] = useState('');
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const [seed, setSeed] = useState(getRandomSeed());
+  const avatarUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}`;
+
+  const handleRefresh = () => {
+    setSeed(getRandomSeed());
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name && selectedAvatar) {
-      onComplete({ name, avatar: selectedAvatar });
+    if (name) {
+      onComplete({ name, avatar: { id: seed, url: avatarUrl } });
     }
   };
 
@@ -19,7 +25,7 @@ function Onboarding({ onComplete }) {
       <div className="onboarding-card fade-in">
         <div className="logo-section">
           <div className="coop-logo">Coop</div>
-          <h1>Velkommen til Hackathon!</h1>
+          <h1>Velkomment til Fridgaton!</h1>
           <p>Hvem er du i dag?</p>
         </div>
 
@@ -40,27 +46,28 @@ function Onboarding({ onComplete }) {
           </div>
 
           <div className="avatar-section">
-            <label>Velg din karakter</label>
-            <div className="avatar-grid">
-              {AVATARS.map((av) => (
-                <button
-                  key={av.id}
-                  type="button"
-                  className={`avatar-btn ${selectedAvatar?.id === av.id ? 'selected' : ''}`}
-                  onClick={() => setSelectedAvatar(av)}
-                >
-                  <img src={av.url} alt="Avatar" />
-                </button>
-              ))}
+            <label>Din karakter</label>
+            <div className="single-avatar-picker">
+              <div className="avatar-preview">
+                <img src={avatarUrl} alt="Avatar" />
+              </div>
+              <button 
+                type="button" 
+                className="refresh-btn" 
+                onClick={handleRefresh}
+                title="Ny karakter"
+              >
+                <RefreshCw size={24} />
+              </button>
             </div>
           </div>
 
           <button 
             type="submit" 
             className="submit-btn" 
-            disabled={!name || !selectedAvatar}
+            disabled={!name}
           >
-            Start Hackathon <ArrowRight size={20} />
+            Kom i gang <ArrowRight size={20} />
           </button>
         </form>
       </div>

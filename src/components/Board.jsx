@@ -70,7 +70,7 @@ function Board({ user }) {
     <div className="board-page">
       <header className="board-header">
         <div className="header-left">
-          <div className="board-logo">Coop Hackathon</div>
+          <div className="board-logo">Fridgaton</div>
         </div>
         <div className="header-right">
           <div className="user-profile">
