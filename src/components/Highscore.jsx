@@ -1,9 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, ArrowLeft, Medal } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import './Highscore.css';
 
 function Highscore({ tasks, onBack }) {
+  // Continuous confetti effect
+  useEffect(() => {
+    const end = Date.now() + (1000 * 60 * 60); // Effectively indefinite for a session
+
+    const colors = ['#0047FF', '#FDB913', '#00A34D', '#ffffff'];
+
+    const frame = () => {
+      confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: colors
+      });
+      confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: colors
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+
+    frame();
+    return () => {
+      // Clean up/stop logic if needed (canvas-confetti handles most of this)
+    };
+  }, []);
   // Calculate scores: count 'done' tasks for each user name
   const scoresMap = tasks
     .filter(task => task.status === 'done' && task.assignee)
