@@ -7,8 +7,24 @@ import './Board.css';
 
 function Board({ user }) {
   const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem('hackathon_tasks');
-    return savedTasks ? JSON.parse(savedTasks) : initialTasks;
+    const savedTasksStr = localStorage.getItem('hackathon_tasks');
+    if (!savedTasksStr) return initialTasks;
+
+    const savedTasks = JSON.parse(savedTasksStr);
+    
+    // Merge logic: Use initialTasks as the source of truth for content,
+    // but keep the status and assignee from savedTasks if the task ID matches.
+    return initialTasks.map(initialTask => {
+      const savedTask = savedTasks.find(t => t.id === initialTask.id);
+      if (savedTask) {
+        return {
+          ...initialTask,
+          status: savedTask.status,
+          assignee: savedTask.assignee
+        };
+      }
+      return initialTask;
+    });
   });
 
   useEffect(() => {
