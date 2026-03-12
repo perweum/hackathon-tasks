@@ -1,53 +1,77 @@
 import React, { useState, useEffect } from 'react';
 import { initialTasks } from '../data/tasks';
+import { db } from '../firebase';
+import { collection, onSnapshot, doc, updateDoc, setDoc, getDocs, query } from 'firebase/firestore';
 import TaskCard from './TaskCard';
 import { LogOut, Layout, Play, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import './Board.css';
 
 function Board({ user }) {
-  const [tasks, setTasks] = useState(() => {
-    const savedTasksStr = localStorage.getItem('hackathon_tasks');
-    if (!savedTasksStr) return initialTasks;
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    const savedTasks = JSON.parse(savedTasksStr);
-    
-    // Merge logic: Use initialTasks as the source of truth for content,
-    // but keep the status and assignee from savedTasks if the task ID matches.
-    return initialTasks.map(initialTask => {
-      const savedTask = savedTasks.find(t => t.id === initialTask.id);
-      if (savedTask) {
-        return {
-          ...initialTask,
-          status: savedTask.status,
-          assignee: savedTask.assignee
-        };
-      }
-      return initialTask;
-    });
-  });
-
+  // 1. Sync tasks from Firestore in real-time
   useEffect(() => {
-    localStorage.setItem('hackathon_tasks', JSON.stringify(tasks));
-  }, [tasks]);
-
-  const handleTaskAction = (taskId) => {
-    setTasks(prevTasks => prevTasks.map(task => {
-      if (task.id === taskId) {
-        if (task.status === 'backlog') {
-          return { ...task, status: 'doing', assignee: user };
-        } else if (task.status === 'doing') {
-          confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#008238', '#FDB913', '#ffffff']
-          });
-          return { ...task, status: 'done' };
-        }
+    const q = query(collection(db, 'tasks'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const taskList = [];
+      snapshot.forEach((doc) => {
+        taskList.push({ ...doc.data(), id: doc.id });
+      });
+      
+      if (taskList.length === 0 && loading) {
+        // First time setup: Seed Firestore with initialTasks
+        seedInitialTasks();
+      } else {
+        setTasks(taskList);
+        setLoading(false);
       }
-      return task;
-    }));
+    }, (error) => {
+      console.error("Firebase Snapshot Error:", error);
+      // Fallback if Firebase isn't configured yet
+      setTasks(initialTasks);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const seedInitialTasks = async () => {
+    try {
+      for (const task of initialTasks) {
+        await setDoc(doc(db, 'tasks', task.id), task);
+      }
+    } catch (error) {
+      console.error("Error seeding tasks:", error);
+    }
+  };
+
+  const handleTaskAction = async (taskId) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    try {
+      const taskRef = doc(db, 'tasks', taskId);
+      if (task.status === 'backlog') {
+        await updateDoc(taskRef, {
+          status: 'doing',
+          assignee: user
+        });
+      } else if (task.status === 'doing') {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#00A34D', '#FDB913', '#ffffff'] // Adjusted green
+        });
+        await updateDoc(taskRef, {
+          status: 'done'
+        });
+      }
+    } catch (error) {
+      console.error("Error updating task in Firestore:", error);
+    }
   };
 
   const handleLogout = () => {
@@ -74,9 +98,10 @@ function Board({ user }) {
               onAction={() => handleTaskAction(task.id)} 
             />
           ))}
-          {columnTasks.length === 0 && (
+          {!loading && columnTasks.length === 0 && (
             <div className="empty-state">Ingen oppgaver her</div>
           )}
+          {loading && <div className="loading-state">Laster...</div>}
         </div>
       </div>
     );
