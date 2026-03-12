@@ -67,8 +67,32 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.reset-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+.highscore-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FDB913;
+  color: #2d2d2d;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 700;
+  box-shadow: 0 4px 6px rgba(253, 185, 19, 0.2);
+}
+
+.highscore-nav-btn:hover {
+  background: #e5a711;
+  transform: translateY(-1px);
+}
+
+.highscore-nav-btn svg {
+  color: inherit !important;
+}
+
+@media (max-width: 640px) {
+  .nav-label {
+    display: none;
+  }
 }
 
 .board-container {

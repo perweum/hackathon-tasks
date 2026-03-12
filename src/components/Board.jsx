@@ -3,13 +3,16 @@ import { initialTasks } from '../data/tasks';
 import { db } from '../firebase';
 import { collection, onSnapshot, doc, updateDoc, setDoc, getDocs, query } from 'firebase/firestore';
 import TaskCard from './TaskCard';
-import { LogOut, Layout, Play, CheckCircle2 } from 'lucide-react';
+import Highscore from './Highscore';
+import { LogOut, Layout, Play, CheckCircle2, Trophy } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { AnimatePresence, motion } from 'framer-motion';
 import './Board.css';
 
 function Board({ user }) {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showHighscore, setShowHighscore] = useState(false);
 
   // 1. Sync tasks from Firestore in real-time
   useEffect(() => {
@@ -65,7 +68,7 @@ function Board({ user }) {
         });
       } else if (task.status === 'doing') {
         confetti({
-          particleCount: 100,
+          particleCount: 150,
           spread: 70,
           origin: { y: 0.6 },
           colors: ['#00A34D', '#FDB913', '#ffffff'] // Adjusted green
@@ -104,6 +107,7 @@ function Board({ user }) {
   const renderColumn = (status, title, icon) => {
     const columnTasks = tasks.filter(t => t.status === status);
     
+    // Sort logic for certain columns if needed, but let's keep it simple
     return (
       <div className={`board-column ${status}`}>
         <div className="column-header">
@@ -129,6 +133,15 @@ function Board({ user }) {
     );
   };
 
+  if (showHighscore) {
+    return (
+      <Highscore 
+        tasks={tasks} 
+        onBack={() => setShowHighscore(false)} 
+      />
+    );
+  }
+
   return (
     <div className="board-page">
       <header className="board-header">
@@ -136,6 +149,10 @@ function Board({ user }) {
           <div className="board-logo">Fridgaton</div>
         </div>
         <div className="header-right">
+          <button onClick={() => setShowHighscore(true)} className="highscore-nav-btn" title="Highscore">
+            <Trophy size={20} />
+            <span className="nav-label">Highscore</span>
+          </button>
           <button onClick={handleResetBoard} className="reset-btn" title="Nullstill brett">
             Nullstill brett
           </button>
