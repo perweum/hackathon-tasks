@@ -79,6 +79,23 @@ function Board({ user }) {
     }
   };
 
+  const handleResetBoard = async () => {
+    if (!window.confirm("Er du sikker på at du vil nullstille hele brettet? Alle vil miste sine oppgaver.")) return;
+    
+    try {
+      for (const task of tasks) {
+        const taskRef = doc(db, 'tasks', task.id);
+        await updateDoc(taskRef, {
+          status: 'backlog',
+          assignee: null
+        });
+      }
+      alert("Brettet er nullstilt!");
+    } catch (error) {
+      console.error("Error resetting board:", error);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('hackathon_user');
     window.location.reload();
@@ -119,6 +136,9 @@ function Board({ user }) {
           <div className="board-logo">Fridgaton</div>
         </div>
         <div className="header-right">
+          <button onClick={handleResetBoard} className="reset-btn" title="Nullstill brett">
+            Nullstill brett
+          </button>
           <div className="user-profile">
             <img src={user.avatar.url} alt={user.name} className="user-avatar" />
             <span className="user-name">{user.name}</span>
