@@ -7,11 +7,12 @@ import './Highscore.css';
 function Highscore({ tasks, onBack }) {
   // Continuous confetti effect
   useEffect(() => {
-    const end = Date.now() + (1000 * 60 * 60); // Effectively indefinite for a session
-
+    let isActive = true;
     const colors = ['#0047FF', '#FDB913', '#00A34D', '#ffffff'];
 
     const frame = () => {
+      if (!isActive) return;
+
       confetti({
         particleCount: 2,
         angle: 60,
@@ -27,14 +28,13 @@ function Highscore({ tasks, onBack }) {
         colors: colors
       });
 
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
+      requestAnimationFrame(frame);
     };
 
     frame();
     return () => {
-      // Clean up/stop logic if needed (canvas-confetti handles most of this)
+      isActive = false;
+      confetti.reset();
     };
   }, []);
   // Calculate scores: count 'done' tasks for each user name
