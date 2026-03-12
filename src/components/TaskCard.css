@@ -18,7 +18,12 @@
 
 .task-card.backlog { border-left-color: var(--coop-blue-light); }
 .task-card.doing { border-left-color: var(--coop-blue-dark); }
-.task-card.done { border-left-color: var(--coop-blue); opacity: 0.7; }
+.task-card.done { 
+  border-left-color: var(--coop-green); 
+  background-color: var(--coop-green-light);
+  border-color: #c2e0cf;
+  opacity: 0.9; 
+}
 
 .task-card.assigned-to-me {
   background-color: var(--coop-blue-light);

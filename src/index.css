@@ -2,12 +2,15 @@
   --coop-blue: #0047FF;
   --coop-blue-dark: #0036CC;
   --coop-blue-light: #E6EEFF;
+  --coop-blue-faint: #F0F4FF;
   --coop-blue-vibrant: #0047FF;
+  --coop-green: #00A34D;
+  --coop-green-light: #E6F6ED;
   --white: #ffffff;
-  --bg-color: #ffffff;
+  --bg-color: var(--coop-blue-faint);
   --text-primary: #2d2d2d;
   --text-secondary: #666666;
-  --border-color: #e0e0e0;
+  --border-color: #d1d9e6;
   --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
   --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
   --radius-sm: 8px;
