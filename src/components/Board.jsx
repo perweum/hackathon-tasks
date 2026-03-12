@@ -20,16 +20,15 @@ function Board({ user }) {
         taskList.push({ ...doc.data(), id: doc.id });
       });
       
-      if (taskList.length === 0 && loading) {
-        // First time setup: Seed Firestore with initialTasks
-        seedInitialTasks();
-      } else {
-        setTasks(taskList);
-        setLoading(false);
+      // Sync logic: Always ensure tasks from initialTasks exist in Firestore
+      if (loading) {
+        syncTasksToFirestore(taskList);
       }
+      
+      setTasks(taskList);
+      setLoading(false);
     }, (error) => {
       console.error("Firebase Snapshot Error:", error);
-      // Fallback if Firebase isn't configured yet
       setTasks(initialTasks);
       setLoading(false);
     });
@@ -37,13 +36,19 @@ function Board({ user }) {
     return () => unsubscribe();
   }, []);
 
-  const seedInitialTasks = async () => {
+  const syncTasksToFirestore = async (currentFirestoreTasks) => {
     try {
-      for (const task of initialTasks) {
-        await setDoc(doc(db, 'tasks', task.id), task);
+      const existingIds = new Set(currentFirestoreTasks.map(t => t.id));
+      const newTasks = initialTasks.filter(t => !existingIds.has(t.id));
+
+      if (newTasks.length > 0) {
+        console.log(`Seeding ${newTasks.length} new tasks to Firestore...`);
+        for (const task of newTasks) {
+          await setDoc(doc(db, 'tasks', task.id), task);
+        }
       }
     } catch (error) {
-      console.error("Error seeding tasks:", error);
+      console.error("Error syncing tasks:", error);
     }
   };
 
