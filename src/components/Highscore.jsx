@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trophy, ArrowLeft, Medallion } from 'lucide-react';
+import { Trophy, ArrowLeft, Medal } from 'lucide-react';
 import './Highscore.css';
 
 function Highscore({ tasks, onBack }) {
