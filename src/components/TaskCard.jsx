@@ -2,7 +2,7 @@ import React from 'react';
 import { PlayCircle, CheckCircle, ExternalLink } from 'lucide-react';
 import './TaskCard.css';
 
-function TaskCard({ task, onAction, currentUser }) {
+function TaskCard({ task, onAction, onSecondaryAction, currentUser }) {
   const isBacklog = task.status === 'backlog';
   const isDoing = task.status === 'doing';
   const isAssignedToMe = task.assignee?.name === currentUser?.name;
@@ -45,9 +45,14 @@ function TaskCard({ task, onAction, currentUser }) {
             </button>
           )}
           {isDoing && isAssignedToMe && (
-            <button className="action-btn done-btn" onClick={onAction}>
-              Ferdig <CheckCircle size={14} />
-            </button>
+            <>
+              <button className="action-btn done-btn" onClick={onAction}>
+                Ferdig <CheckCircle size={14} />
+              </button>
+              <button className="action-btn cancel-btn" onClick={onSecondaryAction}>
+                Angre
+              </button>
+            </>
           )}
         </div>
       </div>

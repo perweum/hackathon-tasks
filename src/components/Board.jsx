@@ -82,6 +82,23 @@ function Board({ user }) {
     }
   };
 
+  const handleSecondaryTaskAction = async (taskId) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    try {
+      const taskRef = doc(db, 'tasks', taskId);
+      if (task.status === 'doing') {
+        await updateDoc(taskRef, {
+          status: 'backlog',
+          assignee: null
+        });
+      }
+    } catch (error) {
+      console.error("Error unselecting task in Firestore:", error);
+    }
+  };
+
   const handleResetBoard = async () => {
     if (!window.confirm("Er du sikker på at du vil nullstille hele brettet? Alle vil miste sine oppgaver.")) return;
     
@@ -122,6 +139,7 @@ function Board({ user }) {
               task={task} 
               currentUser={user}
               onAction={() => handleTaskAction(task.id)} 
+              onSecondaryAction={() => handleSecondaryTaskAction(task.id)}
             />
           ))}
           {!loading && columnTasks.length === 0 && (
