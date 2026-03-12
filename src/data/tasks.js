@@ -135,6 +135,7 @@ export const initialTasks = [
     id: 'gen-3',
     title: 'Action sheet text button',
     description: 'Text button med ikon til venstre som første element.',
+    link: 'https://github.com/orgs/coopnorge/projects/167/views/7?pane=issue&itemId=152974166&issue=coopnorge%7Ccoop-design-tokens%7C608',
     mainCategory: 'Generelt',
     subCategory: 'Iterasjon',
     status: 'backlog',

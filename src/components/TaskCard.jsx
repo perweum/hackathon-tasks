@@ -31,8 +31,8 @@ function TaskCard({ task, onAction, currentUser }) {
         {task.title && <h3 className="task-title">{task.title}</h3>}
         {task.description && <p className="task-description">{task.description}</p>}
         {task.link && (
-          <a href={task.link} target="_blank" rel="noopener noreferrer" className="task-link" title={task.link}>
-            {task.link.replace(/^https?:\/\//, '').replace(/\/$/, '')} <ExternalLink size={12} />
+          <a href={task.link.trim()} target="_blank" rel="noopener noreferrer" className="task-link" title={task.link}>
+            Dokumentasjon <ExternalLink size={12} />
           </a>
         )}
       </div>
