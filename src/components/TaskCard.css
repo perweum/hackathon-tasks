@@ -18,16 +18,17 @@
 
 .task-card.backlog { border-left-color: var(--coop-blue-light); }
 .task-card.doing { border-left-color: var(--coop-blue-dark); }
-.task-card.done { 
-  border-left-color: var(--coop-green); 
-  background-color: #f0fdf4;
-  border-color: #bbf7d0;
-  opacity: 1; 
-}
-
 .task-card.assigned-to-me {
   background-color: var(--coop-blue-light);
   border-left-color: var(--coop-blue);
+}
+
+/* Ensure done status overrides assignment coloring */
+.task-card.done { 
+  border-left-color: var(--coop-green) !important; 
+  background-color: #f0fdf4 !important;
+  border-color: #bbf7d0 !important;
+  opacity: 1; 
 }
 
 .task-header {
@@ -59,10 +60,10 @@
 .tag.sub-category.iterasjon { background: #fef2f2; color: #991b1b; }
 
 .assignee-mini-img {
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 1.5px solid white;
+  border: 2px solid white;
   box-shadow: 0 0 0 1px var(--border-color);
 }
 

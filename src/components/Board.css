@@ -130,11 +130,17 @@
   .board-container {
     grid-template-columns: 1fr;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
   }
   
   .board-column {
     min-height: auto;
   }
+
+  .board-column.done { order: 1; }
+  .board-column.doing { order: 2; }
+  .board-column.backlog { order: 3; }
 }
 
 @media (max-width: 640px) {
