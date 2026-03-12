@@ -20,9 +20,9 @@
 .task-card.doing { border-left-color: var(--coop-blue-dark); }
 .task-card.done { 
   border-left-color: var(--coop-green); 
-  background-color: var(--coop-green-light);
-  border-color: #c2e0cf;
-  opacity: 0.9; 
+  background-color: #f0fdf4;
+  border-color: #bbf7d0;
+  opacity: 1; 
 }
 
 .task-card.assigned-to-me {
